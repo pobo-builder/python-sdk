@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pobo-sdk"
-version = "1.0.4"
+version = "1.0.5"
 description = "Official Python SDK for Pobo API V2 - product content management and webhooks"
 readme = "README.md"
 license = "MIT"

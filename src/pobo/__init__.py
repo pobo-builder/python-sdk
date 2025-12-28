@@ -21,7 +21,7 @@ from pobo.enums import Language, WebhookEvent
 from pobo.exceptions import ApiError, PoboError, ValidationError, WebhookError
 from pobo.webhook_handler import WebhookHandler
 
-__version__ = "1.0.4"
+__version__ = "1.0.5"
 
 __all__ = [
     # Client
