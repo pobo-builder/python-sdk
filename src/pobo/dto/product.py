@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -18,23 +18,23 @@ class Product(BaseModel):
     is_visible: bool
     name: LocalizedString
     url: LocalizedString
-    short_description: LocalizedString | None = None
-    description: LocalizedString | None = None
-    seo_title: LocalizedString | None = None
-    seo_description: LocalizedString | None = None
-    content: Content | None = None
-    images: list[str] = Field(default_factory=list)
-    categories_ids: list[str] = Field(default_factory=list)
-    parameters_ids: list[int] = Field(default_factory=list)
-    guid: str | None = None
-    is_loaded: bool | None = None
-    categories: list[dict[str, Any]] = Field(default_factory=list)
-    created_at: datetime | None = None
-    updated_at: datetime | None = None
+    short_description: Optional[LocalizedString] = None
+    description: Optional[LocalizedString] = None
+    seo_title: Optional[LocalizedString] = None
+    seo_description: Optional[LocalizedString] = None
+    content: Optional[Content] = None
+    images: List[str] = Field(default_factory=list)
+    categories_ids: List[str] = Field(default_factory=list)
+    parameters_ids: List[int] = Field(default_factory=list)
+    guid: Optional[str] = None
+    is_loaded: Optional[bool] = None
+    categories: List[Dict[str, Any]] = Field(default_factory=list)
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
-    def to_api_dict(self) -> dict[str, Any]:
+    def to_api_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for API request."""
-        data: dict[str, Any] = {
+        data: Dict[str, Any] = {
             "id": self.id,
             "is_visible": self.is_visible,
             "name": self.name.to_dict(),

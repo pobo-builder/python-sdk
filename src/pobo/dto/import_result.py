@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -14,9 +14,9 @@ class ImportResult(BaseModel):
     imported: int = 0
     updated: int = 0
     skipped: int = 0
-    errors: list[dict[str, Any]] = Field(default_factory=list)
-    values_imported: int | None = None
-    values_updated: int | None = None
+    errors: List[Dict[str, Any]] = Field(default_factory=list)
+    values_imported: Optional[int] = None
+    values_updated: Optional[int] = None
 
     def has_errors(self) -> bool:
         """Check if there are any errors."""
