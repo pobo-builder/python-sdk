@@ -1,9 +1,9 @@
 """Enums for Pobo SDK."""
 
-from enum import StrEnum
+from enum import Enum
 
 
-class Language(StrEnum):
+class Language(str, Enum):
     """Supported languages for localized content."""
 
     DEFAULT = "default"
@@ -15,7 +15,7 @@ class Language(StrEnum):
     HU = "hu"
 
 
-class WebhookEvent(StrEnum):
+class WebhookEvent(str, Enum):
     """Webhook event types."""
 
     PRODUCTS_UPDATE = "products.update"
