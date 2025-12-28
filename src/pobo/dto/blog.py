@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
-from pobo.dto.localized_string import LocalizedString
 from pobo.dto.content import Content
+from pobo.dto.localized_string import LocalizedString
 
 
 class Blog(BaseModel):

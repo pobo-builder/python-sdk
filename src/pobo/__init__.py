@@ -5,21 +5,21 @@ Product content management and webhooks.
 """
 
 from pobo.client import PoboClient
-from pobo.webhook_handler import WebhookHandler
-from pobo.enums import Language, WebhookEvent
-from pobo.exceptions import ApiError, ValidationError, WebhookError, PoboError
 from pobo.dto import (
-    LocalizedString,
-    Content,
-    Product,
-    Category,
     Blog,
+    Category,
+    Content,
+    ImportResult,
+    LocalizedString,
+    PaginatedResponse,
     Parameter,
     ParameterValue,
-    ImportResult,
-    PaginatedResponse,
+    Product,
     WebhookPayload,
 )
+from pobo.enums import Language, WebhookEvent
+from pobo.exceptions import ApiError, PoboError, ValidationError, WebhookError
+from pobo.webhook_handler import WebhookHandler
 
 __version__ = "1.0.4"
 
