@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Generic, TypeVar
+from typing import Generic, List, TypeVar
 
 from pydantic import BaseModel, Field
 
@@ -12,7 +12,7 @@ T = TypeVar("T")
 class PaginatedResponse(BaseModel, Generic[T]):
     """Paginated API response."""
 
-    data: list[T] = Field(default_factory=list)
+    data: List[T] = Field(default_factory=list)
     current_page: int = 1
     per_page: int = 100
     total: int = 0

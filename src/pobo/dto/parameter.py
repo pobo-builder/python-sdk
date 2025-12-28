@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Dict, List
 
 from pydantic import BaseModel, Field
 
@@ -13,7 +13,7 @@ class ParameterValue(BaseModel):
     id: int
     value: str
 
-    def to_api_dict(self) -> dict[str, Any]:
+    def to_api_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for API request."""
         return {"id": self.id, "value": self.value}
 
@@ -23,9 +23,9 @@ class Parameter(BaseModel):
 
     id: int
     name: str
-    values: list[ParameterValue] = Field(default_factory=list)
+    values: List[ParameterValue] = Field(default_factory=list)
 
-    def to_api_dict(self) -> dict[str, Any]:
+    def to_api_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for API request."""
         return {
             "id": self.id,

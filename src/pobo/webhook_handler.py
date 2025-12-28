@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
-from typing import Any
+from typing import Any, Optional, Union
 
 from pobo.dto.webhook_payload import WebhookPayload
 from pobo.exceptions import WebhookError
@@ -19,7 +19,7 @@ class WebhookHandler:
     def __init__(self, webhook_secret: str) -> None:
         self.webhook_secret = webhook_secret
 
-    def handle(self, payload: str | bytes, signature: str | None) -> WebhookPayload:
+    def handle(self, payload: Union[str, bytes], signature: Optional[str]) -> WebhookPayload:
         """
         Validate and parse webhook payload.
 

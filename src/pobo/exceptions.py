@@ -1,6 +1,6 @@
 """Exceptions for Pobo SDK."""
 
-from typing import Any
+from typing import Any, Dict, Optional
 
 
 class PoboError(Exception):
@@ -15,7 +15,7 @@ class ApiError(PoboError):
     def __init__(
         self,
         message: str,
-        http_code: int | None = None,
+        http_code: Optional[int] = None,
         response_body: Any = None,
     ) -> None:
         super().__init__(message)
@@ -38,7 +38,7 @@ class ApiError(PoboError):
 class ValidationError(PoboError):
     """Validation error with field errors."""
 
-    def __init__(self, message: str, errors: dict[str, Any] | None = None) -> None:
+    def __init__(self, message: str, errors: Optional[Dict[str, Any]] = None) -> None:
         super().__init__(message)
         self.errors = errors or {}
 

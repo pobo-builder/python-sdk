@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
-from pobo.dto.localized_string import LocalizedString
 from pobo.dto.content import Content
+from pobo.dto.localized_string import LocalizedString
 
 
 class Blog(BaseModel):
@@ -18,19 +18,19 @@ class Blog(BaseModel):
     is_visible: bool
     name: LocalizedString
     url: LocalizedString
-    category: str | None = None
-    description: LocalizedString | None = None
-    seo_title: LocalizedString | None = None
-    seo_description: LocalizedString | None = None
-    content: Content | None = None
-    images: list[str] = Field(default_factory=list)
-    is_loaded: bool | None = None
-    created_at: datetime | None = None
-    updated_at: datetime | None = None
+    category: Optional[str] = None
+    description: Optional[LocalizedString] = None
+    seo_title: Optional[LocalizedString] = None
+    seo_description: Optional[LocalizedString] = None
+    content: Optional[Content] = None
+    images: List[str] = Field(default_factory=list)
+    is_loaded: Optional[bool] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
-    def to_api_dict(self) -> dict[str, Any]:
+    def to_api_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for API request."""
-        data: dict[str, Any] = {
+        data: Dict[str, Any] = {
             "id": self.id,
             "is_visible": self.is_visible,
             "name": self.name.to_dict(),

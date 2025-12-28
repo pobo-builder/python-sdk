@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Iterator, Type, TypeVar
+from typing import Any, Dict, Iterator, List, Optional, Type, TypeVar, Union
 
 import requests
 
@@ -43,28 +43,28 @@ class PoboClient:
 
     # Import methods
 
-    def import_products(self, products: list[Product | dict[str, Any]]) -> ImportResult:
+    def import_products(self, products: List[Union[Product, Dict[str, Any]]]) -> ImportResult:
         """Bulk import products. Maximum 100 items per request."""
         self._validate_bulk_size(products)
         payload = [p.to_api_dict() if isinstance(p, Product) else p for p in products]
         response = self._request("POST", "/api/v2/rest/products", payload)
         return ImportResult.model_validate(response)
 
-    def import_categories(self, categories: list[Category | dict[str, Any]]) -> ImportResult:
+    def import_categories(self, categories: List[Union[Category, Dict[str, Any]]]) -> ImportResult:
         """Bulk import categories. Maximum 100 items per request."""
         self._validate_bulk_size(categories)
         payload = [c.to_api_dict() if isinstance(c, Category) else c for c in categories]
         response = self._request("POST", "/api/v2/rest/categories", payload)
         return ImportResult.model_validate(response)
 
-    def import_parameters(self, parameters: list[Parameter | dict[str, Any]]) -> ImportResult:
+    def import_parameters(self, parameters: List[Union[Parameter, Dict[str, Any]]]) -> ImportResult:
         """Bulk import parameters. Maximum 100 items per request."""
         self._validate_bulk_size(parameters)
         payload = [p.to_api_dict() if isinstance(p, Parameter) else p for p in parameters]
         response = self._request("POST", "/api/v2/rest/parameters", payload)
         return ImportResult.model_validate(response)
 
-    def import_blogs(self, blogs: list[Blog | dict[str, Any]]) -> ImportResult:
+    def import_blogs(self, blogs: List[Union[Blog, Dict[str, Any]]]) -> ImportResult:
         """Bulk import blogs. Maximum 100 items per request."""
         self._validate_bulk_size(blogs)
         payload = [b.to_api_dict() if isinstance(b, Blog) else b for b in blogs]
@@ -75,10 +75,10 @@ class PoboClient:
 
     def get_products(
         self,
-        page: int | None = None,
-        per_page: int | None = None,
-        last_update_from: datetime | None = None,
-        is_edited: bool | None = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        last_update_from: Optional[datetime] = None,
+        is_edited: Optional[bool] = None,
     ) -> PaginatedResponse[Product]:
         """Get paginated list of products."""
         params = self._build_query_params(page, per_page, last_update_from, is_edited)
@@ -87,10 +87,10 @@ class PoboClient:
 
     def get_categories(
         self,
-        page: int | None = None,
-        per_page: int | None = None,
-        last_update_from: datetime | None = None,
-        is_edited: bool | None = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        last_update_from: Optional[datetime] = None,
+        is_edited: Optional[bool] = None,
     ) -> PaginatedResponse[Category]:
         """Get paginated list of categories."""
         params = self._build_query_params(page, per_page, last_update_from, is_edited)
@@ -99,10 +99,10 @@ class PoboClient:
 
     def get_blogs(
         self,
-        page: int | None = None,
-        per_page: int | None = None,
-        last_update_from: datetime | None = None,
-        is_edited: bool | None = None,
+        page: Optional[int] = None,
+        per_page: Optional[int] = None,
+        last_update_from: Optional[datetime] = None,
+        is_edited: Optional[bool] = None,
     ) -> PaginatedResponse[Blog]:
         """Get paginated list of blogs."""
         params = self._build_query_params(page, per_page, last_update_from, is_edited)
@@ -113,24 +113,24 @@ class PoboClient:
 
     def iter_products(
         self,
-        last_update_from: datetime | None = None,
-        is_edited: bool | None = None,
+        last_update_from: Optional[datetime] = None,
+        is_edited: Optional[bool] = None,
     ) -> Iterator[Product]:
         """Iterate through all products, handling pagination automatically."""
         yield from self._iterate(self.get_products, last_update_from, is_edited)
 
     def iter_categories(
         self,
-        last_update_from: datetime | None = None,
-        is_edited: bool | None = None,
+        last_update_from: Optional[datetime] = None,
+        is_edited: Optional[bool] = None,
     ) -> Iterator[Category]:
         """Iterate through all categories, handling pagination automatically."""
         yield from self._iterate(self.get_categories, last_update_from, is_edited)
 
     def iter_blogs(
         self,
-        last_update_from: datetime | None = None,
-        is_edited: bool | None = None,
+        last_update_from: Optional[datetime] = None,
+        is_edited: Optional[bool] = None,
     ) -> Iterator[Blog]:
         """Iterate through all blogs, handling pagination automatically."""
         yield from self._iterate(self.get_blogs, last_update_from, is_edited)
@@ -140,8 +140,8 @@ class PoboClient:
     def _iterate(
         self,
         get_method: Any,
-        last_update_from: datetime | None,
-        is_edited: bool | None,
+        last_update_from: Optional[datetime],
+        is_edited: Optional[bool],
     ) -> Iterator[Any]:
         """Generic iterator for paginated responses."""
         page = 1
@@ -157,7 +157,7 @@ class PoboClient:
                 break
             page += 1
 
-    def _validate_bulk_size(self, items: list[Any]) -> None:
+    def _validate_bulk_size(self, items: List[Any]) -> None:
         """Validate bulk import size."""
         if not items:
             raise ValidationError.empty_payload()
@@ -166,13 +166,13 @@ class PoboClient:
 
     def _build_query_params(
         self,
-        page: int | None,
-        per_page: int | None,
-        last_update_from: datetime | None,
-        is_edited: bool | None,
-    ) -> dict[str, Any]:
+        page: Optional[int],
+        per_page: Optional[int],
+        last_update_from: Optional[datetime],
+        is_edited: Optional[bool],
+    ) -> Dict[str, Any]:
         """Build query parameters for GET requests."""
-        params: dict[str, Any] = {}
+        params: Dict[str, Any] = {}
         if page is not None:
             params["page"] = page
         if per_page is not None:
@@ -185,7 +185,7 @@ class PoboClient:
 
     def _parse_paginated_response(
         self,
-        response: dict[str, Any],
+        response: Dict[str, Any],
         item_class: Type[T],
     ) -> PaginatedResponse[T]:
         """Parse paginated response into typed objects."""
@@ -203,8 +203,8 @@ class PoboClient:
         method: str,
         endpoint: str,
         data: Any = None,
-        params: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
+        params: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
         """Make HTTP request to the API."""
         url = f"{self.base_url}{endpoint}"
 
@@ -221,7 +221,7 @@ class PoboClient:
 
         return self._handle_response(response)
 
-    def _handle_response(self, response: requests.Response) -> dict[str, Any]:
+    def _handle_response(self, response: requests.Response) -> Dict[str, Any]:
         """Handle API response."""
         try:
             body = response.json() if response.text else {}

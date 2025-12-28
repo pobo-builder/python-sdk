@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Union
 
 from pydantic import BaseModel, field_validator
 
@@ -16,7 +17,7 @@ class WebhookPayload(BaseModel):
 
     @field_validator("timestamp", mode="before")
     @classmethod
-    def parse_timestamp(cls, v: int | str | datetime) -> datetime:
+    def parse_timestamp(cls, v: Union[int, str, datetime]) -> datetime:
         """Parse timestamp from various formats."""
         if isinstance(v, datetime):
             return v
