@@ -241,6 +241,8 @@ def pobo_webhook(request):
             sync_products.delay()
         elif payload.event == WebhookEvent.CATEGORIES_UPDATE:
             sync_categories.delay()
+        elif payload.event == WebhookEvent.BLOGS_UPDATE:
+            sync_blogs.delay()
 
         return JsonResponse({"status": "ok"})
 
@@ -260,7 +262,7 @@ payload = handler.handle(
 ### Webhook Payload
 
 ```python
-payload.event      # str: "products.update" or "categories.update"
+payload.event      # str: "products.update", "categories.update", or "blogs.update"
 payload.timestamp  # datetime
 payload.eshop_id   # int
 ```

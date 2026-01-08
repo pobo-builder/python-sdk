@@ -20,3 +20,4 @@ class WebhookEvent(str, Enum):
 
     PRODUCTS_UPDATE = "products.update"
     CATEGORIES_UPDATE = "categories.update"
+    BLOGS_UPDATE = "blogs.update"

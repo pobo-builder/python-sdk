@@ -34,6 +34,15 @@ class TestWebhookHandler:
         assert result.event == "products.update"
         assert result.eshop_id == 123
 
+    def test_handle_blogs_update_payload(self, handler, secret):
+        payload = json.dumps({"event": "blogs.update", "timestamp": 1704067200, "eshop_id": 456})
+        signature = self.sign(payload, secret)
+
+        result = handler.handle(payload, signature)
+
+        assert result.event == "blogs.update"
+        assert result.eshop_id == 456
+
     def test_handle_missing_signature(self, handler):
         payload = json.dumps({"event": "products.update"})
 
